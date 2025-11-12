@@ -51,7 +51,7 @@ export function DashboardPage() {
               </div>
               <div>
                 <h1 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  CaloriApp
+                  CalorApp
                 </h1>
                 <p className="text-xs text-gray-600 dark:text-gray-400">
                   ¡Hola, {user.name}!
