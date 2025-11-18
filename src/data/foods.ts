@@ -5,22 +5,38 @@ export const FOODS: Food[] = [
   id: 'f1',
   name: 'Manzana',
   category: 'fruits',
-  caloriesPer100g: 52
+  caloriesPer100g: 52,
+  hasUnits: true,
+  caloriesPerUnit: 95,
+  unitName: 'pieza',
+  gramsPerUnit: 182
 }, {
   id: 'f2',
   name: 'Plátano',
   category: 'fruits',
-  caloriesPer100g: 89
+  caloriesPer100g: 89,
+  hasUnits: true,
+  caloriesPerUnit: 105,
+  unitName: 'pieza',
+  gramsPerUnit: 118
 }, {
   id: 'f3',
   name: 'Naranja',
   category: 'fruits',
-  caloriesPer100g: 47
+  caloriesPer100g: 47,
+  hasUnits: true,
+  caloriesPerUnit: 62,
+  unitName: 'pieza',
+  gramsPerUnit: 131
 }, {
   id: 'f4',
   name: 'Mango',
   category: 'fruits',
-  caloriesPer100g: 60
+  caloriesPer100g: 60,
+  hasUnits: true,
+  caloriesPerUnit: 202,
+  unitName: 'pieza',
+  gramsPerUnit: 336
 }, {
   id: 'f5',
   name: 'Sandía',
@@ -62,7 +78,11 @@ export const FOODS: Food[] = [
   id: 'p4',
   name: 'Huevo',
   category: 'proteins',
-  caloriesPer100g: 155
+  caloriesPer100g: 155,
+  hasUnits: true,
+  caloriesPerUnit: 78,
+  unitName: 'pieza',
+  gramsPerUnit: 50
 }, {
   id: 'p5',
   name: 'Frijoles',
@@ -84,12 +104,20 @@ export const FOODS: Food[] = [
   id: 'd1',
   name: 'Leche',
   category: 'dairy',
-  caloriesPer100g: 42
+  caloriesPer100g: 42,
+  hasUnits: true,
+  caloriesPerUnit: 105,
+  unitName: 'taza',
+  gramsPerUnit: 250
 }, {
   id: 'd2',
   name: 'Yogurt',
   category: 'dairy',
-  caloriesPer100g: 59
+  caloriesPer100g: 59,
+  hasUnits: true,
+  caloriesPerUnit: 118,
+  unitName: 'taza',
+  gramsPerUnit: 200
 }, {
   id: 'd3',
   name: 'Queso',
@@ -106,12 +134,20 @@ export const FOODS: Food[] = [
   id: 'b1',
   name: 'Refresco',
   category: 'beverages',
-  caloriesPer100g: 42
+  caloriesPer100g: 42,
+  hasUnits: true,
+  caloriesPerUnit: 140,
+  unitName: 'vaso',
+  gramsPerUnit: 333
 }, {
   id: 'b2',
   name: 'Jugo de naranja',
   category: 'beverages',
-  caloriesPer100g: 45
+  caloriesPer100g: 45,
+  hasUnits: true,
+  caloriesPerUnit: 112,
+  unitName: 'vaso',
+  gramsPerUnit: 250
 }, {
   id: 'b3',
   name: 'Café',
@@ -133,27 +169,47 @@ export const FOODS: Food[] = [
   id: 'g1',
   name: 'Arroz',
   category: 'grains',
-  caloriesPer100g: 130
+  caloriesPer100g: 130,
+  hasUnits: true,
+  caloriesPerUnit: 206,
+  unitName: 'taza',
+  gramsPerUnit: 158
 }, {
   id: 'g2',
   name: 'Pasta',
   category: 'grains',
-  caloriesPer100g: 131
+  caloriesPer100g: 131,
+  hasUnits: true,
+  caloriesPerUnit: 220,
+  unitName: 'taza',
+  gramsPerUnit: 168
 }, {
   id: 'g3',
   name: 'Pan',
   category: 'grains',
-  caloriesPer100g: 265
+  caloriesPer100g: 265,
+  hasUnits: true,
+  caloriesPerUnit: 80,
+  unitName: 'rebanada',
+  gramsPerUnit: 30
 }, {
   id: 'g4',
   name: 'Tortilla',
   category: 'grains',
-  caloriesPer100g: 218
+  caloriesPer100g: 218,
+  hasUnits: true,
+  caloriesPerUnit: 52,
+  unitName: 'pieza',
+  gramsPerUnit: 24
 }, {
   id: 'g5',
   name: 'Avena',
   category: 'grains',
-  caloriesPer100g: 389
+  caloriesPer100g: 389,
+  hasUnits: true,
+  caloriesPerUnit: 150,
+  unitName: 'taza',
+  gramsPerUnit: 40
 },
 // Verduras
 {

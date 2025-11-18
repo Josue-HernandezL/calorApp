@@ -86,7 +86,13 @@ export const signInWithEmail = async (email: string, password: string): Promise<
     }
 
     return null;
-  } catch (error) {
+  } catch (error: any) {
+    // Silenciar errores de red causados por bloqueadores de anuncios
+    if (error?.message?.includes('ERR_BLOCKED_BY_CLIENT') || 
+        error?.code === 'unavailable' ||
+        error?.code === 'cancelled') {
+      return null;
+    }
     console.error('Error al iniciar sesión con email:', error);
     throw error;
   }
@@ -161,7 +167,13 @@ export const updateUserData = async (
       ...data,
       lastUpdated: new Date().toISOString()
     });
-  } catch (error) {
+  } catch (error: any) {
+    // Silenciar errores de red causados por bloqueadores de anuncios
+    if (error?.message?.includes('ERR_BLOCKED_BY_CLIENT') || 
+        error?.code === 'unavailable' ||
+        error?.code === 'cancelled') {
+      return;
+    }
     console.error('Error al actualizar datos:', error);
     throw error;
   }
@@ -177,7 +189,13 @@ export const getUserData = async (firebaseUid: string): Promise<UserData | null>
     }
 
     return null;
-  } catch (error) {
+  } catch (error: any) {
+    // Silenciar errores de red causados por bloqueadores de anuncios
+    if (error?.message?.includes('ERR_BLOCKED_BY_CLIENT') || 
+        error?.code === 'unavailable' ||
+        error?.code === 'cancelled') {
+      return null;
+    }
     console.error('Error al obtener datos del usuario:', error);
     throw error;
   }
@@ -186,7 +204,14 @@ export const getUserData = async (firebaseUid: string): Promise<UserData | null>
 export const signOut = async (): Promise<void> => {
   try {
     await firebaseSignOut(auth);
-  } catch (error) {
+  } catch (error: any) {
+    // Silenciar errores de red causados por bloqueadores de anuncios
+    if (error?.message?.includes('ERR_BLOCKED_BY_CLIENT') || 
+        error?.code === 'unavailable' ||
+        error?.code === 'cancelled') {
+      // Estos errores son causados por extensiones del navegador, no son críticos
+      return;
+    }
     console.error('Error al cerrar sesión:', error);
     throw error;
   }

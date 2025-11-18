@@ -16,6 +16,10 @@ export interface Food {
   name: string;
   category: 'fruits' | 'proteins' | 'dairy' | 'beverages' | 'grains' | 'vegetables';
   caloriesPer100g: number;
+  hasUnits?: boolean;
+  caloriesPerUnit?: number;
+  unitName?: string; // e.g., 'pieza', 'taza', 'unidad'
+  gramsPerUnit?: number;
 }
 export interface FoodEntry {
   id: string;
@@ -25,6 +29,8 @@ export interface FoodEntry {
   calories: number;
   timestamp: string;
   meal: MealType;
+  quantity?: number;
+  unit?: 'grams' | 'units';
 }
 export interface DailyLog {
   date: string; // YYYY-MM-DD

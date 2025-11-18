@@ -8,6 +8,7 @@ import { Card } from '../components/Card';
 import { Button } from '../components/Button';
 import { ThemeToggle } from '../components/ThemeToggle';
 import { WeightModal } from '../components/WeightModal';
+import { MotivationalMessage } from '../components/MotivationalMessage';
 export function DashboardPage() {
   const navigate = useNavigate();
   const {
@@ -128,6 +129,9 @@ export function DashboardPage() {
             </div>
           </div>
         </Card>
+
+        {/* Motivational Message */}
+        <MotivationalMessage consumed={todayLog.totalCalories} goal={user.tdee} />
 
         {/* Weight Card */}
         <Card>

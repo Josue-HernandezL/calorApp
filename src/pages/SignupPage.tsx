@@ -94,6 +94,7 @@ export function SignupPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setErrors({});
 
     try {
       const tmb = calculateTMB(parseInt(formData.age), formData.sex, parseFloat(formData.weight), parseFloat(formData.height));
@@ -123,16 +124,30 @@ export function SignupPage() {
         // El contexto cargará automáticamente los datos desde Firestore
         navigate('/dashboard');
       } else {
-        setErrors({ email: 'Error al crear la cuenta. Intenta de nuevo.' });
+        setErrors({ general: 'Error al crear la cuenta. Intenta de nuevo.' });
       }
     } catch (err) {
-      const error = err as { code?: string };
+      console.error('Error en registro:', err);
+      const error = err as { code?: string; message?: string };
+      
       if (error.code === 'auth/email-already-in-use') {
-        setErrors({ email: 'Este correo ya está registrado.' });
+        setErrors({ 
+          general: 'Este correo ya está registrado. ¿Quieres iniciar sesión?' 
+        });
+        // Opcionalmente redirigir al login después de unos segundos
+        setTimeout(() => {
+          navigate('/login');
+        }, 3000);
       } else if (error.code === 'auth/weak-password') {
-        setErrors({ password: 'La contraseña es muy débil.' });
+        setErrors({ general: 'La contraseña es muy débil. Usa al menos 6 caracteres.' });
+      } else if (error.code === 'auth/invalid-email') {
+        setErrors({ general: 'El correo electrónico no es válido.' });
+      } else if (error.code === 'auth/operation-not-allowed') {
+        setErrors({ general: 'El registro con email/contraseña no está habilitado.' });
+      } else if (error.code === 'auth/network-request-failed') {
+        setErrors({ general: 'Error de conexión. Verifica tu internet.' });
       } else {
-        setErrors({ email: 'Error al crear la cuenta. Intenta de nuevo.' });
+        setErrors({ general: error.message || 'Error al crear la cuenta. Intenta de nuevo.' });
       }
     } finally {
       setIsLoading(false);
@@ -340,6 +355,23 @@ export function SignupPage() {
                       </div>
                     </label>)}
                 </div>
+
+                {errors.general && (
+                  <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                    <p className="text-sm text-red-600 dark:text-red-400 text-center">
+                      {errors.general}
+                    </p>
+                    {errors.general.includes('ya está registrado') && (
+                      <button
+                        type="button"
+                        onClick={() => navigate('/login')}
+                        className="mt-2 text-sm text-[#2196F3] hover:underline w-full text-center"
+                      >
+                        Ir a iniciar sesión
+                      </button>
+                    )}
+                  </div>
+                )}
 
                 <Button type="submit" fullWidth size="lg" disabled={isLoading}>
                   {isLoading ? (

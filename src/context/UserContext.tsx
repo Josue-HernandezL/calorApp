@@ -5,11 +5,11 @@ interface UserContextType {
   user: User | null;
   setUser: (user: User | null) => void;
   dailyLogs: DailyLog[];
-  addFoodEntry: (entry: Omit<FoodEntry, 'id' | 'timestamp'>) => void;
+  addFoodEntry: (entry: Omit<FoodEntry, 'id' | 'timestamp'>, date?: string) => void;
   getTodayLog: () => DailyLog;
   getLogByDate: (date: string) => DailyLog;
   clearTodayLog: () => void;
-  removeFoodEntry: (entryId: string) => void;
+  removeFoodEntry: (entryId: string, date?: string) => void;
   weightEntries: WeightEntry[];
   addWeightEntry: (weight: number) => void;
   getLatestWeight: () => WeightEntry | null;
@@ -51,21 +51,21 @@ export function UserProvider({
     return getLogByDate(today);
   }, [getLogByDate]);
 
-  const addFoodEntry = useCallback((entry: Omit<FoodEntry, 'id' | 'timestamp'>) => {
-    const today = new Date().toISOString().split('T')[0];
+  const addFoodEntry = useCallback((entry: Omit<FoodEntry, 'id' | 'timestamp'>, date?: string) => {
+    const targetDate = date || new Date().toISOString().split('T')[0];
     const newEntry: FoodEntry = {
       ...entry,
       id: `${Date.now()}-${Math.random()}`,
       timestamp: new Date().toISOString()
     };
     setDailyLogs(prevLogs => {
-      const existingLogIndex = prevLogs.findIndex(log => log.date === today);
+      const existingLogIndex = prevLogs.findIndex(log => log.date === targetDate);
       if (existingLogIndex >= 0) {
         const updatedLogs = [...prevLogs];
         const updatedEntries = [...updatedLogs[existingLogIndex].entries, newEntry];
         const totalCalories = updatedEntries.reduce((sum, e) => sum + e.calories, 0);
         updatedLogs[existingLogIndex] = {
-          date: today,
+          date: targetDate,
           entries: updatedEntries,
           totalCalories,
           breakfastCalories: calculateMealCalories(updatedEntries, 'breakfast'),
@@ -76,7 +76,7 @@ export function UserProvider({
         return updatedLogs;
       } else {
         return [...prevLogs, {
-          date: today,
+          date: targetDate,
           entries: [newEntry],
           totalCalories: newEntry.calories,
           breakfastCalories: newEntry.meal === 'breakfast' ? newEntry.calories : 0,
@@ -88,16 +88,16 @@ export function UserProvider({
     });
   }, [setDailyLogs, calculateMealCalories]);
 
-  const removeFoodEntry = useCallback((entryId: string) => {
-    const today = new Date().toISOString().split('T')[0];
+  const removeFoodEntry = useCallback((entryId: string, date?: string) => {
+    const targetDate = date || new Date().toISOString().split('T')[0];
     setDailyLogs(prevLogs => {
-      const existingLogIndex = prevLogs.findIndex(log => log.date === today);
+      const existingLogIndex = prevLogs.findIndex(log => log.date === targetDate);
       if (existingLogIndex >= 0) {
         const updatedLogs = [...prevLogs];
         const updatedEntries = updatedLogs[existingLogIndex].entries.filter(e => e.id !== entryId);
         const totalCalories = updatedEntries.reduce((sum, e) => sum + e.calories, 0);
         updatedLogs[existingLogIndex] = {
-          date: today,
+          date: targetDate,
           entries: updatedEntries,
           totalCalories,
           breakfastCalories: calculateMealCalories(updatedEntries, 'breakfast'),

@@ -6,6 +6,7 @@ import { MealSection } from '../components/MealSection';
 import { FoodSearchBar } from '../components/FoodSearchBar';
 import { FoodItem } from '../components/FoodItem';
 import { ThemeToggle } from '../components/ThemeToggle';
+import { MotivationalMessage } from '../components/MotivationalMessage';
 import { FOODS } from '../data/foods';
 import { MealType } from '../types';
 import { Button } from '../components/Button';
@@ -40,7 +41,7 @@ export function DiaryPage() {
       grams,
       calories,
       meal: selectedMeal
-    });
+    }, dateString);
     setShowAddFood(false);
     setSearchQuery('');
   };
@@ -117,15 +118,18 @@ export function DiaryPage() {
           </div>
         </div>
 
+        {/* Motivational Message */}
+        <MotivationalMessage consumed={todayLog.totalCalories} goal={user.tdee} />
+
         {/* Meal Sections */}
         <div className="space-y-4">
-          <MealSection title="Desayuno" calories={todayLog.breakfastCalories} entries={getMealEntries('breakfast')} onAddClick={() => handleOpenAddFood('breakfast')} onRemoveEntry={removeFoodEntry} />
+          <MealSection title="Desayuno" calories={todayLog.breakfastCalories} entries={getMealEntries('breakfast')} onAddClick={() => handleOpenAddFood('breakfast')} onRemoveEntry={(entryId) => removeFoodEntry(entryId, dateString)} />
 
-          <MealSection title="Almuerzo" calories={todayLog.lunchCalories} entries={getMealEntries('lunch')} onAddClick={() => handleOpenAddFood('lunch')} onRemoveEntry={removeFoodEntry} />
+          <MealSection title="Almuerzo" calories={todayLog.lunchCalories} entries={getMealEntries('lunch')} onAddClick={() => handleOpenAddFood('lunch')} onRemoveEntry={(entryId) => removeFoodEntry(entryId, dateString)} />
 
-          <MealSection title="Cena" calories={todayLog.dinnerCalories} entries={getMealEntries('dinner')} onAddClick={() => handleOpenAddFood('dinner')} onRemoveEntry={removeFoodEntry} />
+          <MealSection title="Cena" calories={todayLog.dinnerCalories} entries={getMealEntries('dinner')} onAddClick={() => handleOpenAddFood('dinner')} onRemoveEntry={(entryId) => removeFoodEntry(entryId, dateString)} />
 
-          <MealSection title="Snacks" calories={todayLog.snackCalories} entries={getMealEntries('snack')} onAddClick={() => handleOpenAddFood('snack')} onRemoveEntry={removeFoodEntry} />
+          <MealSection title="Snacks" calories={todayLog.snackCalories} entries={getMealEntries('snack')} onAddClick={() => handleOpenAddFood('snack')} onRemoveEntry={(entryId) => removeFoodEntry(entryId, dateString)} />
         </div>
       </main>
 

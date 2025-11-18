@@ -16,16 +16,23 @@ export function HistoryPage() {
     return null;
   }
   
+  // Generar los últimos 7 días en orden cronológico
   const last7Days = Array.from({
     length: 7
   }, (_, i) => {
     const date = new Date();
+    date.setHours(0, 0, 0, 0); // Resetear hora para evitar problemas de zona horaria
     date.setDate(date.getDate() - (6 - i));
-    return date.toISOString().split('T')[0];
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   });
+  
   const chartData = last7Days.map(date => {
     const log = dailyLogs.find(l => l.date === date);
-    const dateObj = new Date(date);
+    const [year, month, day] = date.split('-').map(Number);
+    const dateObj = new Date(year, month - 1, day);
     const dayName = dateObj.toLocaleDateString('es-ES', {
       weekday: 'short'
     });
@@ -90,19 +97,23 @@ export function HistoryPage() {
           </h3>
 
           <div className="space-y-4">
-            {chartData.reverse().map(day => {
-            const log = dailyLogs.find(l => l.date === day.fullDate);
-            const percentage = day.consumed / day.goal * 100;
-            const difference = day.consumed - day.goal;
-            return <div key={day.fullDate} className="p-4 bg-gray-50 dark:bg-[#0d1117] rounded-lg border border-gray-200 dark:border-[#30363d]">
+            {chartData.map(dayData => {
+            const log = dailyLogs.find(l => l.date === dayData.fullDate);
+            const percentage = dayData.consumed / dayData.goal * 100;
+            const difference = dayData.consumed - dayData.goal;
+            return <div key={dayData.fullDate} className="p-4 bg-gray-50 dark:bg-[#0d1117] rounded-lg border border-gray-200 dark:border-[#30363d]">
                   <div className="flex justify-between items-center mb-2">
                     <div>
                       <p className="font-medium text-gray-900 dark:text-white">
-                        {new Date(day.fullDate).toLocaleDateString('es-ES', {
-                      weekday: 'long',
-                      day: 'numeric',
-                      month: 'long'
-                    })}
+                        {(() => {
+                          const [year, month, day] = dayData.fullDate.split('-').map(Number);
+                          const dateObj = new Date(year, month - 1, day);
+                          return dateObj.toLocaleDateString('es-ES', {
+                            weekday: 'long',
+                            day: 'numeric',
+                            month: 'long'
+                          });
+                        })()}
                       </p>
                       {log && log.entries.length > 0 && <p className="text-sm text-gray-600 dark:text-gray-400">
                           {log.entries.length} alimento
@@ -112,7 +123,7 @@ export function HistoryPage() {
                     </div>
                     <div className="text-right">
                       <p className="text-xl font-bold text-gray-900 dark:text-white">
-                        {day.consumed} kcal
+                        {dayData.consumed} kcal
                       </p>
                       <p className={`text-sm ${difference > 0 ? 'text-red-500' : 'text-[#2196F3]'}`}>
                         {difference > 0 ? '+' : ''}
